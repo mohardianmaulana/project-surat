@@ -54,16 +54,17 @@
                 </ul>
             </div>
             <div class="d-flex">
-                <a href="/login" class="btn btn-outline-secondary me-2">Login</a>
+                <a href="/" class="btn btn-outline-secondary me-2">Login</a>
                 <a href="/register" id="register" class="btn btn-secondary">Sign Up</a>
             </div>
         </div>
     </nav>
 </div>
 
-<div class="row mt-5 pt-5">
-    <img src="{{ asset('template/img/poliwangi.jpg') }}" alt="Gambar">
+<div class="position-relative">
+    <img src="{{ asset('template/img/poliwangi.jpg') }}" alt="Gambar" class="img-fluid">
 </div>
+
     <!-- Content Row -->
 <div class="row mt-4 mx-3">
     <!-- Card 1 -->
@@ -122,7 +123,7 @@
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold">Contact</h5>
                 <div class="d-flex justify-content-center align-items-center">
-                    <i class="fa-solid fa-map-location-dot"></i>
+                    <i class="fa-solid fa-map-location-dot mb-3"></i>
                     <p class="ms-3">Jalan Raya Jember KM 13 Banyuwangi 68461, Jawa Timur – Indonesia</p>
                 </div>
                 <p><i class="fas fa-envelope me-3"></i> poliwangi@poliwangi.ac.id</p>

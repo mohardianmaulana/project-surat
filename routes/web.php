@@ -1,13 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return view('template');
-});
-route::get('/login', function () {
-    return view('login');
-});
+Route::get('/', [LoginController::class, 'login'])->name('login');
+
+
+Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actionlogin');
+
+Route::post('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout')->middleware('auth');
+
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});    // route::get('/login', function () {
+//     return view('login');
+// });
 route::get('/register', function () {
     return view('register');
 });

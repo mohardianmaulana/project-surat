@@ -133,12 +133,13 @@
         <div class="form">
             <img class="logo" src="{{ asset('template/img/Logo Poliwangi.png') }}"  alt="Logo" width="100" height="100">
             <h2>Login Form</h2>
-            <form action="/">
+            <form action="/actionlogin" method="post">
+                @csrf
                 <div class="inputBox">
-                    <input type="text" placeholder="Email">
+                    <input type="text" name="email" placeholder="Email">
                 </div>
                 <div class="inputBox">
-                    <input type="password" placeholder="Password">
+                    <input type="password" name="password" placeholder="Password">
                 </div>
                 <div class="inputBox">
                     <input type="submit" value="Login">

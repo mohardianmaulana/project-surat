@@ -13,15 +13,20 @@
               <div class="dropdown ms-5">
                   <a href="#" class="d-flex align-items-center link-light text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="{{ asset('template/img/Logo Super.png') }}" style="filter: invert(50%) brightness(500%);" alt="" width="32" height="32" class="rounded-circle me-2">
-                      <strong>mdo</strong>
+                      <strong>{{ Auth::user()->name }}</strong>
                   </a>
-                  <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                      <li><a class="dropdown-item" href="#">New project</a></li>
-                      <li><a class="dropdown-item" href="#">Settings</a></li>
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="/login">Sign out</a></li>
-                  </ul>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">New project</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form action="{{ url('/actionlogout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Sign out</button>
+                        </form>
+                    </li>
+                </ul>
               </div>
           </div>
       </nav>
