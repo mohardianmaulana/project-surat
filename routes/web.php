@@ -20,3 +20,6 @@ route::get('/pesanMasuk', function () {
 route::get('/pesanKeluar', function () {
     return view('pesanKeluar');
 });
+route::get('/pelapor', function() {
+    return view('pelapor.index');
+});
