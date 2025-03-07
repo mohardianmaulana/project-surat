@@ -12,7 +12,7 @@ Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actio
 Route::post('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout')->middleware('auth');
 
 Route::middleware('auth', 'verified')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:admin');
 });    // route::get('/login', function () {
 //     return view('login');
 // });
