@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class pelapor extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint-text', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
 
     public function user()
     {
@@ -20,34 +22,31 @@ class pelapor extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
-
-
-    // public static function tambahLaporan($request) {
-    //     $validator = Validator::make($request->all(), [
-    //         'nama' => 'required|string|regex:/^[a-zA-Z\s]+$/|min:3|max:50',
-    //         'nim' => 'required|string|regex:/^[0-9\s]+$/|min:9|max:15',
-    //         'email' => 'required|email|min:3|max:100',
-    //         'nomor' => 'required|string|regex:/^[0-9\s]+$/|min:9|max:15',
-    //     ], [
-    //         'nama.required' => 'Nama pelapor wajib diisi',
-    //         'nim.required' => 'NIM wajib diisi',
-    //         'email.required' => 'Email aktif wajib diisi',
-    //         'nomor.required' => 'Nomor HP wajib diisi',
-    //     ]);
+    public static function tambahLaporan($request) {
+        $validator = Validator::make($request->all(), [
+            'complaint_text' => 'required',
+        ], [
+            'complaint_text.required' => 'Permasalahan wajib diisi',
+        ]);
     
-    //     if ($validator->fails()) {
-    //         return [
-    //             'status' => 'error',
-    //             'errors' => $validator->errors(),
-    //         ];
-    //     }
+        if ($validator->fails()) {
+            return [
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ];
+        }
 
-    //     // Simpan data pelapor
-    //     Pelapor::create([
-    //         'user_id' => Auth::user()->id,
-    //         'status' => 'pending',
-    //     ]);
+        // Simpan data pelapor
+        pelapor::create([
+            'user_id' => Auth::user()->id,
+            'unit_id' => $request->unit_id,
+            'complaint_text' => $request->complaint_text,
+            'forwarded_at' => null,
+            'processed_at' => null,
+            'completed_at' => null,
+            'status' => 'pending',
+        ]);
     
-    //     return ['status' => 'success'];
-    // }
+        return ['status' => 'success'];
+    }
 }

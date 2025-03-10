@@ -55,7 +55,8 @@
     @include('template.navbar')
 
       <!-- Isi konten -->
-    <form action='{{ url('pelapor.index') }}' method='post'>
+    <form action='{{ url('/tambah-laporan') }}' method='post'>
+    @csrf
       <div class="card mt-3 mx-3 shadow" style="border-radius: 15px;">
         <div class="card-body">
             <h1 class="mx-5 mb-3" style="color: grey;">Laporan</h1>
@@ -64,29 +65,27 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <fieldset disabled>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlInput1" class="form-label">Nama Lengkap</label>
-                <input type="string" class="form-control" id="exampleFormControlInput1" name="nama" placeholder="{{ Auth::user()->name }}">
-            </div>
-            </fieldset>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlInput1" class="form-label">NIM</label>
-                <input type="string" class="form-control" id="exampleFormControlInput1" name="nim" placeholder="">
-            </div>
-            <fieldset disabled>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlInput1" class="form-label">Email Aktif</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="{{ Auth::user()->email }}">
-            </div>
-            </fieldset>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlInput1" class="form-label">Nomor WhatsApp</label>
-                <input type="string" class="form-control" id="exampleFormControlInput1" name="nama" placeholder="">
+            <div class="mx-5 mb-3">
+                <label for="unit" class="col-sm-2 col-form-label required">Unit</label>
+                    <div class="col">
+                        <select name="unit_id" class="form-control">
+                            <option value="" class="text-center">--- Pilih ---</option>
+                            @foreach ($unit_id as $item)
+                                <option value="{{ $item->id }}" class="text-center" {{ old('unit_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @if (count($errors) > 0)
+                        <div style="width:auto; color:#dc4c64; margin-top:0.25rem;">
+                            {{ $errors->first('unit_id') }}
+                        </div>
+                    @endif
+                </div>
             </div>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Permasalahan</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="laporan" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="complaint_text" rows="3"></textarea>
             </div>
             <div class="d-flex justify-content-end mx-5">
                 <button type="submit" class="btn btn-secondary btn-lg mt-3">Kirim</button>

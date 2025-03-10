@@ -152,6 +152,12 @@
                     <input type="text" name="name" placeholder="Username" required>
                 </div>
                 <div class="inputBox">
+                    <input type="text" name="nim" placeholder="NIM" required>
+                </div>
+                <div class="inputBox">
+                    <input type="text" name="nomor" placeholder="Nomor HP aktif" required>
+                </div>
+                <div class="inputBox">
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="inputBox">
