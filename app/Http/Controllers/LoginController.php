@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-// use Illuminate\Contracts\Session\Session as Session;
+use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session as FacadesSession;
@@ -22,19 +23,19 @@ class LoginController extends Controller
         // Cari user berdasarkan email
         $user = User::where('email', $request->email)->first();
             // Proses Login
-            if ($user && $user->password === $request->password) { // Tanpa bcrypt
+            if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user); // Login manual tanpa hashing
 
-                $role = Auth::user()->roles_id; // Asumsi relasi roles
-                if ($role === 1) {
+                $role = Auth::user()->getRoleNames()->first();
+                if ($role === 'pelapor') {
                     return redirect('dashboard')->with('success', 'Login Berhasil');
-                } else if ($role === 2) {
+                } else if ($role === 'admin') {
                     return redirect('dashboard')->with('success', 'Login Berhasil');
-                } else if ($role === 3) {
+                } else if ($role === 'upt') {
                     return redirect('dashboard')->with('success', 'Login Berhasil');
                 } else {
-                    return redirect('login')->with('success', 'Login Berhasil');
-                }
+                    return redirect('login')->with('error', 'Role tidak ditemukan');
+                }                
             } else {
                 Session::flash('error', 'Email atau Password Salah');
                 return redirect('/');

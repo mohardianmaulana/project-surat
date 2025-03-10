@@ -38,7 +38,7 @@
         .container {
             position: relative;
             width: 380px;
-            height: 500px;
+            height: 520px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             display: flex;
@@ -126,6 +126,19 @@
         .forget a:hover {
             color: #000000;
         }
+        .form .inputBox select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .form .inputBox select option {
+            color: black; 
+            background: white;
+        }
     </style>
 </head>
 <body>
@@ -133,21 +146,29 @@
         <div class="form">
             <img class="logo" src="{{ asset('template/img/Logo Poliwangi.png') }}"  alt="Logo" width="100" height="100">
             <h2>Register Form</h2>
-            <form action="">
+            <form action="{{ route('register.store') }}" method="POST">
+                @csrf
                 <div class="inputBox">
-                    <input type="text" placeholder="Username">
+                    <input type="text" name="name" placeholder="Username" required>
                 </div>
                 <div class="inputBox">
-                    <input type="email" placeholder="Email">
+                    <input type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="inputBox">
-                    <input type="password" placeholder="Password">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="inputBox">
+                <select name="role" required class="role-dropdown">
+                    <option value="" disabled selected>Pilih Role</option>
+                    <option value="pelapor">Pelapor</option>
+                    <option value="admin">Admin</option>
+                    <option value="upt">UPT</option>
+                </select>
                 </div>
                 <div class="inputBox">
                     <input type="submit" value="Register">
                 </div>
-                <p class="forget">Have an account? <a href="/login">Sign In</a></p>
-                <p class="forget"><a href="#">Forgot Password?</a></p>
+                <p class="forget">Have an account? <a href="/">Sign In</a></p>
             </form>
         </div>
     </div>

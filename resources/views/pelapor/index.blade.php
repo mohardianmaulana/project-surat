@@ -64,25 +64,29 @@
                     {{ session('success') }}
                 </div>
             @endif
+            <fieldset disabled>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlInput1" class="form-label">Nama Lengkap</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+                <input type="string" class="form-control" id="exampleFormControlInput1" name="nama" placeholder="{{ Auth::user()->name }}">
             </div>
+            </fieldset>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlInput1" class="form-label">NIM</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+                <input type="string" class="form-control" id="exampleFormControlInput1" name="nim" placeholder="">
             </div>
+            <fieldset disabled>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlInput1" class="form-label">Email Aktif</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+                <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="{{ Auth::user()->email }}">
             </div>
+            </fieldset>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlInput1" class="form-label">Nomor WhatsApp</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+                <input type="string" class="form-control" id="exampleFormControlInput1" name="nama" placeholder="">
             </div>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Permasalahan</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="laporan" rows="3"></textarea>
             </div>
             <div class="d-flex justify-content-end mx-5">
                 <button type="submit" class="btn btn-secondary btn-lg mt-3">Kirim</button>

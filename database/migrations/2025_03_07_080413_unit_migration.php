@@ -6,17 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('units', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('message');
-            $table->enum('status', ['unread', 'read'])->default('unread');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
 
     public function down() {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('units');
     }
 };
 

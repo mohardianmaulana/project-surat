@@ -12,7 +12,7 @@ class pelaporController extends Controller
     }
 
     public function storePelapor(Request $request) {
-        $pelapor = pelapor::tambahpelapor($request);
+        $pelapor = pelapor::tambahlaporan($request);
         if ($pelapor['status'] == 'error') {
             // Jika ada error validasi, kembali ke form dengan error
             return redirect()->back()
