@@ -11,6 +11,8 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('unit_id')->nullable()->constrained('units')->onDelete('set null');
             $table->text('complaint_text');
+            $table->text('reply_text')->nullable();
+            $table->foreignId('replied_by')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('status', ['pending', 'forwarded', 'processed', 'completed'])->default('pending');
             $table->timestamp('forwarded_at')->nullable();
             $table->timestamp('processed_at')->nullable();

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class pelapor extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
 
     public function user()
     {
@@ -21,6 +21,20 @@ class pelapor extends Model
     {
         return $this->belongsTo(Unit::class, 'unit_id');
     }
+
+    public static function menampilkanlaporan()
+        {
+            $user = Auth::user();
+
+            // Admin bisa melihat semua laporan kecuali yang "forwarded"
+            $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
+                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->where('complaints.status', 'pending')
+                ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
+                ->get();
+
+            return $pesan_masuk; // Tambahkan return agar bisa digunakan di controller
+        }
 
     public static function tambahLaporan($request) {
         $validator = Validator::make($request->all(), [
@@ -49,4 +63,22 @@ class pelapor extends Model
     
         return ['status' => 'success'];
     }
+
+    public static function MengirimLaporan($id) {
+        $laporan = pelapor::find($id);
+
+        if(!$laporan){
+            return [
+                'status' => 'error',
+                'message' => 'Laporan tidak ditemukan',
+            ];
+        }
+
+        $laporan->status = 'forwarded';
+        $laporan->forwarded_at = date('Y-m-d H:i:s');
+        $laporan->save();
+
+        return $laporan;
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\pelaporController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UnitPoliwangiController;
 
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -19,7 +20,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/pelapor', [pelaporController::class, 'index'])->name('pelapor')->middleware('role:pelapor');
     Route::post('/tambah-laporan', [pelaporController::class, 'storeLaporan'])->name('pelapor.store')->middleware('role:pelapor');
+    Route::get('/balasan', [pelaporController::class, 'pesanMasuk'])->name('balasan')->middleware('role:pelapor');
     Route::get('/pesan-masuk', [AdminController::class, 'index'])->name('pesan-masuk')->middleware('role:admin');
+    Route::post('/complaints/reply/{id}', [AdminController::class, 'balas'])->name('reply')->middleware('role:admin');
+    Route::post('/laporan/{id}/update', [AdminController::class, 'updatelaporan'])->name('laporan.update');
+});
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/pesanupt', [UnitPoliwangiController::class, 'index'])->name('pesanupt')->middleware('role:upt'); 
 });    // route::get('/login', function () {
 //     return view('login');
 // });

@@ -43,27 +43,27 @@ class rolePermissionSeeder extends Seeder
 
         ////////////////////////////////////////////////////////////////////////////
 
-        $user = User::updateOrCreate(
-            ['email' => 'ardi@gmail.com'], 
-            [
-                'name' => 'Ardi',
-                'password' => bcrypt('12345678'),
-            ]
-        );
+        // $user = User::updateOrCreate(
+        //     ['email' => 'ardi@gmail.com'], 
+        //     [
+        //         'name' => 'Ardi',
+        //         'password' => bcrypt('12345678'),
+        //     ]
+        // );
 
-        // Pastikan user mendapat role
-        $user->assignRole('pelapor');
+        // // Pastikan user mendapat role
+        // $user->assignRole('pelapor');
 
-        $user1 = User::updateOrCreate(
-            ['email' => 'holil@gmail.com'], 
-            [
-                'name' => 'Holil',
-                'password' => bcrypt('12345678'),
-            ]
-        );
+        // $user1 = User::updateOrCreate(
+        //     ['email' => 'holil@gmail.com'], 
+        //     [
+        //         'name' => 'Holil',
+        //         'password' => bcrypt('12345678'),
+        //     ]
+        // );
 
-        // Pastikan user mendapat role
-        $user1->assignRole('admin');
+        // // Pastikan user mendapat role
+        // $user1->assignRole('admin');
         // $user  = User::find(1);
         // $user2 = User::find(2);
         // $user3 = User::find(3);

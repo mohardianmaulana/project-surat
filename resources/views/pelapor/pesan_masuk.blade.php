@@ -48,24 +48,21 @@
         @foreach ($pesan_masuk as $item)
         <div class="card shadow mb-4">
           <div class="card-header">
-            Kepada : {{ $item->unit_name }}
+            Kepada : {{ $item->user_name }}
           </div>
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
               <h5 class="card-title text-dark">
-                <strong>Dari : </strong> {{ $item->user_name }}
+                <strong>Dari : </strong> {{ $item->replied_name }}
                 <small class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->format('H:i:s || d-m-Y') }}</small>
               </h5>
-              <p class="card-text">{{ $item->complaint_text }}</p>
+              <p class="card-text">{{ $item->reply_text }}</p>
             </div>
-            <div>
+            <!-- <div>
               <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
-              <form action="{{ route('laporan.update', ['id' => $item->id]) }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</button>
-            </form>
+              <a href="#" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</a>
               <a class="btn btn-secondary btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">Detail</a>
-            </div>
+            </div> -->
           </div>
         </div>
         @endforeach
@@ -100,7 +97,7 @@
                             <td class="col-md-2 text-center">{{ $item->nim }}</td>
                             <td class="col-md-2 text-center">{{ $item->nomor }}</td>
                             <td class="col-md-2 text-center">{{ $item->complaint_text }}</td>
-                            <td class="col-md-1 text-center">{{ \Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') }}</td>
+                            <td class="col-md-1 text-center">{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
                         </tr>
                     </tbody>
                 </table>
