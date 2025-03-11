@@ -20,10 +20,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/pelapor', [pelaporController::class, 'index'])->name('pelapor')->middleware('role:pelapor');
     Route::post('/tambah-laporan', [pelaporController::class, 'storeLaporan'])->name('pelapor.store')->middleware('role:pelapor');
-    Route::get('/balasan', [pelaporController::class, 'pesanMasuk'])->name('balasan')->middleware('role:pelapor');
-    Route::get('/pesan-masuk', [AdminController::class, 'index'])->name('pesan-masuk')->middleware('role:admin');
+    Route::get('/pesanMasuk', [pelaporController::class, 'pesanMasuk'])->name('pesanMasuk')->middleware('role:pelapor');
+    Route::get('/pesanKeluar', [pelaporController::class, 'pesanKeluar'])->name('pesanKeluar')->middleware('role:pelapor');
+    Route::get('/pesan-masuk', [AdminController::class, 'pesan_masuk'])->name('pesan-masuk')->middleware('role:admin');
+    Route::get('/pesan-keluar', [AdminController::class, 'pesan_keluar'])->name('pesan-keluar')->middleware('role:admin');
     Route::post('/complaints/reply/{id}', [AdminController::class, 'balas'])->name('reply')->middleware('role:admin');
     Route::post('/laporan/{id}/update', [AdminController::class, 'updatelaporan'])->name('laporan.update');
+    Route::post('/pelapor/reply/{id}', [pelaporController::class, 'balas_pelapor'])->name('reply_pelapor')->middleware('role:pelapor');
 });
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/pesanupt', [UnitPoliwangiController::class, 'index'])->name('pesanupt')->middleware('role:upt'); 
@@ -36,7 +39,7 @@ route::get('/homepage', function () {
 // route::get('/pesanMasuk', function () {
 //     return view('pesanMasuk');
 // });
-route::get('/pesanKeluar', function () {
+route::get('/pesan', function () {
     return view('pesanKeluar');
 });
 // route::get('/pelapor', function() {

@@ -6,7 +6,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <title>Pesan Masuk</title>
+    <title>Pesan Keluar</title>
 
     <style>
         body {
@@ -39,30 +39,33 @@
       @include('template.sidebar')
       @include('template.navbar')
 
+        @if (session('success'))
+                <div class="alert alert-success mx-5 mt-3">
+                    {{ session('success') }}
+                </div>
+        @endif
       <div class="container mt-4">
-        @if ($pesan_masuk->isEmpty())
+        @if ($pesan_keluar->isEmpty())
         <div class="alert alert-secondary text-center" style="color: black;">
             Tidak ada pesan masuk
         </div>
         @else
-        @foreach ($pesan_masuk as $item)
+        @foreach ($pesan_keluar as $item)
         <div class="card shadow mb-4">
           <div class="card-header">
-            Kepada: {{ $item->unit_name }}
+            Kepada : {{ $item->replied_name }}
           </div>
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
               <h5 class="card-title text-dark">
                 <strong>Dari : </strong> {{ $item->user_name }}
-                <small class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->format('H:i:s || d-m-Y') }}</small>
+                <small class="text-muted">{{ \Carbon\Carbon::parse($item->updated_at ?? $item->created_at)->format('H:i:s || d-m-Y') }}</small>
               </h5>
               <p class="card-text">{{ $item->complaint_text }}</p>
             </div>
             <div>
-            <form action="#" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-primary btn-sm btn-custom me-2">Balas</button>
-            </form>
+              <!-- <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
+              <a href="#" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</a> -->
               <a class="btn btn-secondary btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">Detail</a>
             </div>
           </div>
@@ -72,7 +75,8 @@
       </div>
     </div>
     @include('template.script')
-    @foreach ($pesan_masuk as $item)
+
+    @foreach ($pesan_keluar as $item)
 <div class="modal fade" id="modalDetail{{ $item->id }}" tabindex="-1" aria-labelledby="modalDetailLabel{{ $item->id }}" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

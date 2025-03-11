@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class pelapor extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'reply_pelapor', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
 
     public function user()
     {
@@ -22,7 +22,7 @@ class pelapor extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
-    public static function menampilkanlaporan()
+        public static function menampilkanLaporanMasuk()
         {
             $user = Auth::user();
 
@@ -30,10 +30,25 @@ class pelapor extends Model
             $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
                 ->join('users', 'complaints.user_id', '=', 'users.id')
                 ->where('complaints.status', 'pending')
+                ->where('complaints.reply_pelapor', '0')
                 ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
                 ->get();
 
             return $pesan_masuk; // Tambahkan return agar bisa digunakan di controller
+        }
+
+        public static function menampilkanLaporanKeluar()
+        {
+            $user = Auth::user();
+
+            // Admin bisa melihat semua laporan kecuali yang "forwarded"
+            $pesan_keluar = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
+                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->where('complaints.status', 'forwarded')
+                ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
+                ->get();
+
+            return $pesan_keluar; // Tambahkan return agar bisa digunakan di controller
         }
 
     public static function tambahLaporan($request) {

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->text('complaint_text');
             $table->text('reply_text')->nullable();
             $table->foreignId('replied_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->text('reply_pelapor', ['0', '1'])->default('0');
             $table->enum('status', ['pending', 'forwarded', 'processed', 'completed'])->default('pending');
             $table->timestamp('forwarded_at')->nullable();
             $table->timestamp('processed_at')->nullable();

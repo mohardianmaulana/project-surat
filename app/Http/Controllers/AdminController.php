@@ -9,10 +9,16 @@ use App\Models\pelapor;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function pesan_masuk()
     {
-        $pesan_masuk = pelapor::menampilkanlaporan(); 
-        return view('pesan-masuk.index', compact('pesan_masuk'));
+        $pesan_masuk = pelapor::menampilkanLaporanMasuk(); 
+        return view('admin.pesan_masuk', compact('pesan_masuk'));
+    }
+
+    public function pesan_keluar()
+    {
+        $pesan_keluar = pelapor::menampilkanLaporanKeluar(); 
+        return view('admin.pesan_keluar', compact('pesan_keluar'));
     }
 
     public function updatelaporan($id) {

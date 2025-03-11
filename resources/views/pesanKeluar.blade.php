@@ -56,35 +56,37 @@
 
       <!-- Isi konten -->
       <!-- Content Row -->
-      <div class="card mx-5 mt-3">
-        <div class="card-header">
-            Kepada ....
-        </div>
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div class="text-start">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <div class="card mt-3 mx-3 shadow" style="border-radius: 15px;">
+        <div class="card-body">
+            <h1 class="mx-5 mb-3" style="color: grey;">Laporan</h1>
+            @if (session('success'))
+                <div class="alert alert-success mx-5">
+                    {{ session('success') }}
+                </div>
+            @endif
+            <fieldset disabled>
+            <div class="mx-5 mt-3">
+                <label for="disabledTextInput" class="form-label">Nama Pelapor</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
             </div>
-            <div>
-                <a href="#" class="btn btn-primary me-2">Teruskan</a>
+            <div class="mx-5 mt-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Laporan</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="complaint_text" rows="3"></textarea>
+            </div>
+            <div class="mx-5 mt-3">
+                <label for="disabledTextInput" class="form-label">Nama UPT</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+            </div>
+            </fieldset>
+            <div class="mx-5 mt-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Solusi</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="complaint_text" rows="3"></textarea>
+            </div>
+            <div class="d-flex justify-content-end mx-5">
+                <button type="submit" class="btn btn-secondary btn-lg mt-3">Kirim</button>
+            </div>
             </div>
         </div>
-    </div>
-
-    <div class="card mx-5 mt-3">
-        <div class="card-header">
-            Kepada ....
-        </div>
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div class="text-start">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            </div>
-            <div>
-                <a href="#" class="btn btn-primary me-2">Teruskan</a>
-            </div>
-        </div>
-    </div>
 
     @include('template.script')
   </body>

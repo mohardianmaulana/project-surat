@@ -11,13 +11,21 @@ class upt extends Model
     {
         $user = Auth::user();
 
-        // UPT TIK hanya bisa melihat laporan yang berstatus "forwarded"
-        $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
+        // Ambil unit dari user jika ada
+        $unitUser = $user->unit_id; 
+
+        // Cek apakah user memiliki unit_id
+        if ($unitUser) {
+            $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
                 ->join('users', 'complaints.user_id', '=', 'users.id')
-                ->where('complaints.status', 'forwarded')
+                ->where('complaints.unit_id', $unitUser) // Filter berdasarkan unit_id
                 ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
                 ->get();
+        } else {
+            // Jika user tidak terkait dengan unit mana pun, kosongkan hasil
+            $pesan_masuk = collect();
+        }
 
-            return $pesan_masuk;
+        return $pesan_masuk;
     }
 }
