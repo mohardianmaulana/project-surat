@@ -6,6 +6,7 @@ use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class pelapor extends Model
 {
@@ -30,11 +31,45 @@ class pelapor extends Model
             $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
                 ->join('users', 'complaints.user_id', '=', 'users.id')
                 ->where('complaints.status', 'pending')
-                ->where('complaints.reply_pelapor', '0')
                 ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
                 ->get();
 
             return $pesan_masuk; // Tambahkan return agar bisa digunakan di controller
+        }
+
+        public static function menampilkanLaporanMasukUpt()
+        {
+            $user = Auth::user();
+
+            // Ambil semua data dari tabel responses beserta relasi yang diperlukan
+            $pesan_masuk_upt = DB::table('responses')
+                ->join('complaints', 'responses.complaint_id', '=', 'complaints.id')
+                ->join('units', 'responses.unit_id', '=', 'units.id')
+                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->select(
+                    'responses.*', 
+                    
+                    'units.name as unit_name', 
+                    'users.name as user_name', 
+                    'users.nim', 
+                    'users.nomor'
+                )
+                ->get();
+
+            return $pesan_masuk_upt;
+        }
+
+
+        public static function menampilkanLaporan()
+        {
+            $user = Auth::user();
+
+            $pesan = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
+                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
+                ->get();
+
+            return $pesan; // Tambahkan return agar bisa digunakan di controller
         }
 
         public static function menampilkanLaporanKeluar()

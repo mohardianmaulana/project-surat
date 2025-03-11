@@ -28,11 +28,11 @@ class LoginController extends Controller
 
                 $role = Auth::user()->getRoleNames()->first();
                 if ($role === 'pelapor') {
-                    return redirect('dashboard')->with('success', 'Login Berhasil');
+                    return redirect()->route('dashboard')->with('success', 'Login Berhasil');
                 } else if ($role === 'admin') {
-                    return redirect('dashboard')->with('success', 'Login Berhasil');
+                    return redirect()->route('dashboard.admin')->with('success', 'Login Berhasil');
                 } else if ($role === 'upt') {
-                    return redirect('dashboard')->with('success', 'Login Berhasil');
+                    return redirect()->route('dashboard.upt')->with('success', 'Login Berhasil');
                 } else {
                     return redirect('login')->with('error', 'Role tidak ditemukan');
                 }                

@@ -13,8 +13,12 @@ return new class extends Migration {
             $table->text('complaint_text');
             $table->text('reply_text')->nullable();
             $table->foreignId('replied_by')->nullable()->constrained('users')->onDelete('set null');
-            $table->text('reply_pelapor', ['0', '1'])->default('0');
+            $table->enum('reply_pelapor', ['0', '1'])->default('0');
+            $table->enum('answer_status', ['0', '1'])->default('0');
+            $table->timestamp('date_replied_by')->nullable();
+            $table->timestamp('date_reply_pelapor')->nullable();
             $table->enum('status', ['pending', 'forwarded', 'processed', 'completed'])->default('pending');
+            $table->timestamp('pending')->nullable();
             $table->timestamp('forwarded_at')->nullable();
             $table->timestamp('processed_at')->nullable();
             $table->timestamp('completed_at')->nullable();
@@ -26,4 +30,3 @@ return new class extends Migration {
         Schema::dropIfExists('complaints');
     }
 };
-

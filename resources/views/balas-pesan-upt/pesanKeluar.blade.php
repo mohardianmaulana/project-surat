@@ -56,6 +56,7 @@
 
       <!-- Isi konten -->
       <!-- Content Row -->
+       <form action="{{ route('response.store') }}" method="POST">
       <div class="card mt-3 mx-3 shadow" style="border-radius: 15px;">
         <div class="card-body">
             <h1 class="mx-5 mb-3" style="color: grey;">Laporan</h1>
@@ -64,27 +65,40 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <fieldset disabled>
+            <form action="{{ route('response.store') }}" method="POST">
+             @csrf
+
+            
+                <input type="hidden" name="complaint_id" value="{{ $balasPesan->id }}">
+                <input type="hidden" name="unit_id" value="{{ $balasPesan->unit_id }}">
+
+                <div class="mx-5 mt-3">
+                    <label for="namaPelapor" class="form-label">Nama Pelapor</label>
+                    <input type="text" class="form-control" value="{{ $balasPesan->user_name }}" readonly>
+                </div>
+
+                <div class="mx-5 mt-3">
+                    <label for="complaintText" class="form-label">Laporan</label>
+                    <textarea class="form-control" rows="3" readonly>{{ $balasPesan->complaint_text }}</textarea>
+                </div>
+
+                <div class="mx-5 mt-3">
+                    <label for="namaUPT" class="form-label">Nama UPT</label>
+                    <input type="text" class="form-control" value="{{ $balasPesan->unit_name }}" readonly>
+                </div>
+            
+
             <div class="mx-5 mt-3">
-                <label for="disabledTextInput" class="form-label">Nama Pelapor</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Nama Pelapor">
+                <label for="response_text" class="form-label">Solusi</label>
+                <textarea class="form-control" id="response_text" name="response_text" rows="3"></textarea>
             </div>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Laporan</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="complaint_text" rows="3"></textarea>
-            </div>
-            <div class="mx-5 mt-3">
-                <label for="disabledTextInput" class="form-label">Nama UPT</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Nama UPT">
-            </div>
-            </fieldset>
-            <div class="mx-5 mt-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Solusi</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="complaint_text" rows="3"></textarea>
-            </div>
+
             <div class="d-flex justify-content-end mx-5">
+                <a href="{{ route('pesanupt') }}" class="btn btn-danger btn-lg mt-3 mx-3">Kembali</a>
                 <button type="submit" class="btn btn-secondary btn-lg mt-3">Kirim</button>
             </div>
+            </form>
+
             </div>
         </div>
 

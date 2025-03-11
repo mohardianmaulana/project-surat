@@ -49,6 +49,20 @@ class pelaporController extends Controller
         return view('pelapor.pesan_masuk', compact('pesan_masuk'));
     }
 
+    public function pesan()
+    {
+        $user = Auth::user();
+
+        $userId = Auth::id();
+
+        $pesan = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
+                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->where('complaints.user_id', $userId)
+                ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
+                ->get();
+        return view('admin.pesan', compact('pesan'));
+    }
+
     public function pesanKeluar() {
         $userId = Auth::id();
 

@@ -55,16 +55,16 @@
     @include('template.navbar')
 
       <!-- Isi konten -->
+    @if (session('success'))
+            <div class="alert alert-success mx-5">
+                {{ session('success') }}
+            </div>
+    @endif
     <form action='{{ url('/tambah-laporan') }}' method='post'>
     @csrf
       <div class="card mt-3 mx-3 shadow" style="border-radius: 15px;">
         <div class="card-body">
             <h1 class="mx-5 mb-3" style="color: grey;">Laporan</h1>
-            @if (session('success'))
-                <div class="alert alert-success mx-5">
-                    {{ session('success') }}
-                </div>
-            @endif
             <div class="mx-5 mb-3">
                 <label for="unit" class="col-sm-2 col-form-label required">Unit</label>
                     <div class="col">

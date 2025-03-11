@@ -15,10 +15,22 @@ class AdminController extends Controller
         return view('admin.pesan_masuk', compact('pesan_masuk'));
     }
 
+    public function pesan_masuk_upt()
+    {
+        $pesan_masuk_upt = pelapor::menampilkanLaporanMasukUpt(); 
+        return view('pesanMasuk-upt.pesan_masuk_upt', compact('pesan_masuk_upt'));
+    }
+
     public function pesan_keluar()
     {
         $pesan_keluar = pelapor::menampilkanLaporanKeluar(); 
         return view('admin.pesan_keluar', compact('pesan_keluar'));
+    }
+
+    public function pesan()
+    {
+        $pesan = pelapor::menampilkanLaporan(); 
+        return view('admin.pesan', compact('pesan'));
     }
 
     public function updatelaporan($id) {
