@@ -40,7 +40,7 @@ route::get('/homepage', function () {
 //     return view('pesanMasuk');
 // });
 route::get('/pesan', function () {
-    return view('pesanKeluar');
+    return view('balas-pesan-upt.pesanKeluar');
 });
 // route::get('/pelapor', function() {
 //     return view('pelapor.index');

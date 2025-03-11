@@ -67,7 +67,7 @@
             <fieldset disabled>
             <div class="mx-5 mt-3">
                 <label for="disabledTextInput" class="form-label">Nama Pelapor</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Nama Pelapor">
             </div>
             <div class="mx-5 mt-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Laporan</label>
@@ -75,7 +75,7 @@
             </div>
             <div class="mx-5 mt-3">
                 <label for="disabledTextInput" class="form-label">Nama UPT</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Nama UPT">
             </div>
             </fieldset>
             <div class="mx-5 mt-3">
