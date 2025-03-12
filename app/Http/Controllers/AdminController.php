@@ -71,6 +71,7 @@ class AdminController extends Controller
         // Update hanya kolom reply_text
         $pelapor->update([
             'replied_by' => Auth::id(),
+            'date_replied_by' => now(),
             'reply_text' => $request->reply_text,
             'updated_at' => now(),
         ]);

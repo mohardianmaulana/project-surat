@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class pelapor extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'reply_pelapor', 'status', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'reply_pelapor', 'answer_status', 'date_replied_by', 'date_reply_pelapor', 'status', 'pending', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
 
     public function user()
     {
@@ -30,7 +30,7 @@ class pelapor extends Model
             // Admin bisa melihat semua laporan kecuali yang "forwarded"
             $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
                 ->join('users', 'complaints.user_id', '=', 'users.id')
-                ->where('complaints.status', 'pending')
+                ->where('complaints.status', 'forwarded')
                 ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
                 ->get();
 
@@ -105,6 +105,7 @@ class pelapor extends Model
             'user_id' => Auth::user()->id,
             'unit_id' => $request->unit_id,
             'complaint_text' => $request->complaint_text,
+            'pending' => now(),
             'forwarded_at' => null,
             'processed_at' => null,
             'completed_at' => null,

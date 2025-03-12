@@ -56,7 +56,7 @@
 
       <!-- Isi konten -->
     @if (session('success'))
-            <div class="alert alert-success mx-5">
+            <div class="alert alert-success mx-5 mt-3">
                 {{ session('success') }}
             </div>
     @endif

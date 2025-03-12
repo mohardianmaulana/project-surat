@@ -111,10 +111,16 @@ class pelaporController extends Controller
         //     ], 404);
         // }
 
+        // Cek apakah reply_pelapor sudah bernilai 1
+        if ($pelapor->reply_pelapor == 1) {
+            return redirect()->back()->with('error', 'Anda sudah membalas, tidak bisa membalas lagi.');
+        }
+
         // Update hanya kolom reply_text
         $pelapor->update([
             'complaint_text' => $request->complain_text,
             'reply_pelapor' => '1',
+            'date_reply_pelapor' => now(),
             'updated_at' => now(),
         ]);
 

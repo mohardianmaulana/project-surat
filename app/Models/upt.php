@@ -59,8 +59,18 @@ class upt extends Model
 
     public static function BalasPesanView($complaint_id)
     {
-        $complaint = pelapor::first(); // Ambil satu data pertama
-        $complaint_id = $complaint->id;
+        // Ambil data complaint berdasarkan ID yang diberikan
+        $complaint = pelapor::where('id', $complaint_id)->first();
+
+        // Pastikan complaint ditemukan
+        if (!$complaint) {
+            return redirect()->back()->with('error', 'Keluhan tidak ditemukan.');
+        }
+
+        // Cek apakah answer_status sudah bernilai 1
+        if ($complaint->answer_status == 1) {
+            return redirect()->back()->with('error', 'Keluhan ini sudah dibalas, tidak bisa mengakses halaman ini.');
+        }
         $balasPesan = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
             ->join('users', 'complaints.user_id', '=', 'users.id')
             ->where('complaints.id', $complaint_id) // 🔹 Filter berdasarkan complaint_id
@@ -90,6 +100,19 @@ class upt extends Model
                 'status' => 'error',
                 'errors' => $validator->errors(),
             ];
+        }
+
+        // Ambil data complaint berdasarkan complaint_id
+        $complaint = pelapor::find($request->input('complaint_id'));
+
+        // Jika complaint tidak ditemukan, kembalikan error
+        if (!$complaint) {
+            return redirect()->back()->with('error', 'Keluhan tidak ditemukan.');
+        }
+
+        // Cek apakah answer_status sudah bernilai 1
+        if ($complaint->answer_status == 1) {
+            return redirect()->back()->with('error', 'Keluhan ini sudah dibalas, tidak bisa membalas lagi.');
         }
 
         // *🔹 Simpan ke Database*
