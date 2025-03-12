@@ -40,4 +40,10 @@ class UnitPoliwangiController extends Controller
 
         return redirect('/pesanupt')->with('success', 'Laporan berhasil ditanggapi!'); 
     }
+
+    public function pesan_keluar()
+    {
+        $pesan_keluar = upt::menampilkanlaporanKeluar(); 
+        return view('pesanMasuk-upt.pesan_keluar_upt', compact('pesan_keluar'));
+    }
 }

@@ -53,7 +53,7 @@
         @foreach ($pesan_masuk_upt as $item)
         <div class="card shadow mb-4">
           <div class="card-header">
-            Kepada : {{ $item->user_name }} 
+            Kepada : {{ $item->pelapor_name }} 
           </div>
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
@@ -65,8 +65,7 @@
             </div>
             <div>
               <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
-              <form action="{{ route('laporan.update', ['id' => $item->id]) }}" method="POST" style="display:inline;">
-                @csrf
+              <form action="{{ route('send.wa', ['complaint_id' => $item->id]) }}" method="GET" style="display:inline;">
                 <button type="submit" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</button>
             </form>
               <a class="btn btn-secondary btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">Detail</a>
@@ -95,16 +94,16 @@
                             <th class="col-md-1 text-center">Nama</th>
                             <th class="col-md-2 text-center">NIM</th>
                             <th class="col-md-2 text-center">Nomor</th>
-                            <th class="col-md-2 text-center">Permasalahan</th>
+                            <th class="col-md-2 text-center">Jawaban</th>
                             <th class="col-md-1 text-center">Diajukan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="text-center">
+                            <td class="col-md-1 text-center">{{ $item->pelapor_name }}</td>
                             <td class="col-md-1 text-center">{{ $item->unit_name }}</td>
-                            <td class="col-md-1 text-center">{{ $item->user_name }}</td>
-                            <td class="col-md-2 text-center">{{ $item->nim }}</td>
-                            <td class="col-md-2 text-center">{{ $item->nomor }}</td>
+                            <td class="col-md-2 text-center">{{ $item->reviewer_nim }}</td>
+                            <td class="col-md-2 text-center">{{ $item->reviewer_nomor }}</td>
                             <td class="col-md-2 text-center">{{ $item->response_text }}</td>
                             <td class="col-md-1 text-center">{{ \Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') }}</td>
                         </tr>

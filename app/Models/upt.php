@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\pelapor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +14,7 @@ class upt extends Model
 {
     use hasFactory;
     protected $table = 'responses';
-    protected $fillable = ['complaint_id', 'unit_id', 'response_text', 'complaint_text', 'status', 'reviewed_by', 'sent_at', 'reviewed_at'];
+    protected $fillable = ['complaint_id', 'unit_id', 'response_text', 'status', 'reviewed_by', 'sent_at', 'reviewed_at'];
 
     public function user()
     {
@@ -27,6 +29,11 @@ class upt extends Model
     public function compliment()
     {
         return $this->belongsTo(Unit::class, 'complaint_id');
+    }
+
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
     public static function getBalasPesan()
@@ -130,5 +137,93 @@ class upt extends Model
 
         return $response;
     }
+
+    public static function menampilkanlaporanKeluar() {
+        $user = Auth::user();
+    
+        // Ambil unit dari user jika ada
+        $unitUser = $user->unit_id; 
+    
+        // Cek apakah user memiliki unit_id
+        if ($unitUser) {
+            $pesan_keluar = DB::table('responses')
+                ->join('complaints', 'responses.complaint_id', '=', 'complaints.id') // Join ke complaints
+                ->join('units', 'complaints.unit_id', '=', 'units.id') // Join ke units
+                ->join('users as pelapor', 'complaints.user_id', '=', 'pelapor.id') // Join ke users
+                ->join('users as reviewer', 'responses.reviewed_by', '=', 'reviewer.id')
+                ->where('complaints.unit_id', $unitUser) // Filter berdasarkan unit_id
+                ->where('complaints.status', 'processed') // Filter status forwarded
+                ->select(
+                    'responses.*', // Ambil semua data dari responses
+                    'complaints.status as complaint_status', 
+                    'units.name as unit_name',
+                    // Data pelapor
+                    'pelapor.name as pelapor_name',
+                    'pelapor.nim as pelapor_nim',
+                    'pelapor.nomor as pelapor_nomor',
+
+                    // Data reviewer (yang melakukan review)
+                    'reviewer.name as reviewer_name',
+                    'reviewer.nim as reviewer_nim',
+                    'reviewer.nomor as reviewer_nomor'
+                )
+                ->get();
+        } else {
+            // Jika user tidak memiliki unit_id, hasil kosong
+            $pesan_keluar = collect();
+        }
+    
+        return $pesan_keluar;
+    }
+
+    public static function RedirecWa($complaint_id)
+    {
+        // Ambil complaint + pelapor (user) + response terbaru + reviewer
+        $complaint = pelapor::where('id', $complaint_id)
+            ->with([
+                'user', // Ambil pelapor langsung dari tabel users
+                'responses.reviewer', // Ambil response beserta reviewernya
+                'responses.unit' // Unit terkait response
+            ])
+            ->first();
+
+        if (!$complaint || !$complaint->user) {
+            return null;
+        }
+
+        // Data pelapor
+        $namaPelapor = $complaint->user->name ?? 'Tidak diketahui';
+        $nomorPelapor = $complaint->user->nomor ?? null;
+
+        if (!$nomorPelapor) {
+            return null;
+        }
+
+        // Ambil response terbaru
+        $latestResponse = $complaint->responses->sortByDesc('created_at')->first();
+
+        // Data respons
+        $complaintText = $complaint->complaint_text ?? 'Tidak ada deskripsi masalah.';
+        $responseText = "Belum ada respons.";
+        $reviewerNama = "Belum direview";
+        $unitReviewer = "Tidak diketahui";
+
+        if ($latestResponse) {
+            $responseText = $latestResponse->response_text;
+            $reviewerNama = $latestResponse->reviewer->name ?? "Belum direview";
+            $unitReviewer = $latestResponse->unit->name ?? "Tidak diketahui";
+            $complaintText = $complaint->complaint_text ?? 'Tidak ada deskripsi masalah.';
+        }
+
+        // Format teks untuk WhatsApp $namaPelapor
+        $text = "Halo%20*$namaPelapor*%0A"
+          . "Saya%20dari%20admin%20mengirim%20konfirmasi%20atas%20masalah%3A%20%22*$complaintText*%22%0A"
+          . "Saya%20*$reviewerNama*%20Dari%20*$unitReviewer*%0A"
+          . "%22*$responseText*%22";
+
+        return "https://api.whatsapp.com/send?phone=" . $nomorPelapor . "&text=" . $text;
+    }
+
+    
 
 }

@@ -43,27 +43,42 @@ class rolePermissionSeeder extends Seeder
 
         ////////////////////////////////////////////////////////////////////////////
 
-        // $user = User::updateOrCreate(
-        //     ['email' => 'ardi@gmail.com'], 
-        //     [
-        //         'name' => 'Ardi',
-        //         'password' => bcrypt('12345678'),
-        //     ]
-        // );
+        $user = User::updateOrCreate(
+            ['email' => 'ardi@gmail.com'], 
+            [
+                'name' => 'Ardi',
+                'nim' => '362258302089',
+                'nomor' => '6282132945801',
+                'password' => bcrypt('12345678'),
+            ]
+        );
 
-        // // Pastikan user mendapat role
-        // $user->assignRole('pelapor');
+        // Pastikan user mendapat role
+        $user->assignRole('pelapor');
 
-        // $user1 = User::updateOrCreate(
-        //     ['email' => 'holil@gmail.com'], 
-        //     [
-        //         'name' => 'Holil',
-        //         'password' => bcrypt('12345678'),
-        //     ]
-        // );
+        $user1 = User::updateOrCreate(
+            ['email' => 'holil@gmail.com'], 
+            [
+                'name' => 'Holil',
+                'nomor' => '08123456789',
+                'password' => bcrypt('12345678'),
+            ]
+        );
 
-        // // Pastikan user mendapat role
-        // $user1->assignRole('admin');
+        // Pastikan user mendapat role
+        $user1->assignRole('admin');
+
+        $user2 = User::updateOrCreate(
+            ['email' => 'cahya@gmail.com'], 
+            [
+                'name' => 'Cahya',
+                'nomor' => '08123456731',
+                'unit_id' => 1,
+                'password' => bcrypt('12345678'),
+            ]
+        );
+
+        $user2->assignRole('upt');
         // $user  = User::find(1);
         // $user2 = User::find(2);
         // $user3 = User::find(3);

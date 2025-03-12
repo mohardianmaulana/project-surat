@@ -23,6 +23,11 @@ class pelapor extends Model
         return $this->belongsTo(Unit::class, 'unit_id');
     }
 
+    public function responses()
+    {
+        return $this->hasMany(upt::class, 'complaint_id', 'id'); // Relasi ke responses
+    }
+
         public static function menampilkanLaporanMasuk()
         {
             $user = Auth::user();
@@ -30,7 +35,7 @@ class pelapor extends Model
             // Admin bisa melihat semua laporan kecuali yang "forwarded"
             $pesan_masuk = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
                 ->join('users', 'complaints.user_id', '=', 'users.id')
-                ->where('complaints.status', 'forwarded')
+                ->where('complaints.status', 'pending')
                 ->select('complaints.*', 'units.name as unit_name', 'users.name as user_name', 'users.nim', 'users.nomor')
                 ->get();
 
@@ -45,14 +50,20 @@ class pelapor extends Model
             $pesan_masuk_upt = DB::table('responses')
                 ->join('complaints', 'responses.complaint_id', '=', 'complaints.id')
                 ->join('units', 'responses.unit_id', '=', 'units.id')
-                ->join('users', 'complaints.user_id', '=', 'users.id')
+                ->join('users as pelapor', 'complaints.user_id', '=', 'pelapor.id')
+                ->join('users as reviewer', 'responses.reviewed_by', '=', 'reviewer.id')
                 ->select(
                     'responses.*', 
-                    
                     'units.name as unit_name', 
-                    'users.name as user_name', 
-                    'users.nim', 
-                    'users.nomor'
+                    // Data pelapor
+                    'pelapor.name as pelapor_name',
+                    'pelapor.nim as pelapor_nim',
+                    'pelapor.nomor as pelapor_nomor',
+
+                    // Data reviewer (yang melakukan review)
+                    'reviewer.name as reviewer_name',
+                    'reviewer.nim as reviewer_nim',
+                    'reviewer.nomor as reviewer_nomor'
                 )
                 ->get();
 

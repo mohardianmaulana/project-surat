@@ -37,7 +37,11 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/pesanupt', [UnitPoliwangiController::class, 'index'])->name('pesanupt')->middleware('role:upt');  
     Route::get('/response/form/{complaint_id}', [UnitPoliwangiController::class, 'balasPesanView'])->name('balasPesanView')->middleware('role:upt');
     Route::post('/response/store', [UnitPoliwangiController::class, 'store'])->name('response.store')->middleware('role:upt');
-});    // route::get('/login', function () {
+    Route::get('/pesanupt_keluar', [UnitPoliwangiController::class, 'pesan_keluar'])->name('pesanupt_keluar')->middleware('role:upt');
+});
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/send-wa/{complaint_id}', [AdminController::class, 'sendWhatsApp'])->name('send.wa')->middleware('role:admin');
+});// route::get('/login', function () {
 //     return view('login');
 // });
 route::get('/homepage', function () {

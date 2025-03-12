@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\pelapor;
+use App\Models\upt;
 
 class AdminController extends Controller
 {
@@ -77,6 +78,17 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Balasan berhasil dikirim!');
+    }
+
+    public function sendWhatsApp($complaint_id)
+    {
+        $waLink = upt::RedirecWa($complaint_id);
+
+        if ($waLink) {
+            return redirect()->away($waLink);
+        } else {
+            return back()->with('error', 'Data tidak ditemukan atau nomor tidak tersedia.');
+        }
     }
 
 }
