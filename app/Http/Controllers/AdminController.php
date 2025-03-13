@@ -69,6 +69,10 @@ class AdminController extends Controller
         //     ], 404);
         // }
 
+        if (!is_null($pelapor->date_replied_by)) {
+            return redirect()->back()->with('error', 'Keluhan ini sudah dibalas, tidak bisa membalas lagi.');
+        }
+
         // Update hanya kolom reply_text
         $pelapor->update([
             'replied_by' => Auth::id(),

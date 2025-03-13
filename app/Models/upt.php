@@ -14,7 +14,7 @@ class upt extends Model
 {
     use hasFactory;
     protected $table = 'responses';
-    protected $fillable = ['complaint_id', 'unit_id', 'response_text', 'status', 'reviewed_by', 'sent_at', 'reviewed_at'];
+    protected $fillable = ['complaint_id', 'unit_id', 'response_text', 'status', 'reviewed_by', 'sent_at'];
 
     public function user()
     {
@@ -75,7 +75,7 @@ class upt extends Model
         }
 
         // Cek apakah answer_status sudah bernilai 1
-        if ($complaint->answer_status == 1) {
+        if ($complaint->status == 'processed') {
             return redirect()->back()->with('error', 'Keluhan ini sudah dibalas, tidak bisa mengakses halaman ini.');
         }
         $balasPesan = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
@@ -118,7 +118,7 @@ class upt extends Model
         }
 
         // Cek apakah answer_status sudah bernilai 1
-        if ($complaint->answer_status == 1) {
+        if ($complaint->status == 'processed') {
             return redirect()->back()->with('error', 'Keluhan ini sudah dibalas, tidak bisa membalas lagi.');
         }
 
@@ -130,10 +130,11 @@ class upt extends Model
             'reviewed_by' => Auth::id(),
             'sent_at' => now(),
             'status' => 'pending',
+            'reviewed_at' => now(),
         ]);
 
         pelapor::where('id', $request->input('complaint_id'))
-        ->update(['status' => 'processed']);
+        ->update(['status' => 'processed', 'processed_at' => now()]);
 
         return $response;
     }
@@ -221,7 +222,18 @@ class upt extends Model
           . "Saya%20*$reviewerNama*%20Dari%20*$unitReviewer*%0A"
           . "%22*$responseText*%22";
 
-        return "https://api.whatsapp.com/send?phone=" . $nomorPelapor . "&text=" . $text;
+        $complaint->update([
+            'status' => 'completed',
+            'completed_at' => now(),
+        ]);
+
+        if ($latestResponse) {
+            $latestResponse->update([
+                'status' => 'approved',
+            ]);
+        }
+
+        return "https://web.whatsapp.com/send?phone=" . $nomorPelapor . "&text=" . $text;
     }
 
     

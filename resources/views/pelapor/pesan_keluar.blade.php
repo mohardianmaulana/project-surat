@@ -53,13 +53,13 @@
         @foreach ($pesan_keluar as $item)
         <div class="card shadow mb-4">
           <div class="card-header">
-            Kepada : {{ $item->replied_name }}
+            Kepada : {{ $item->unit_name }}
           </div>
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
               <h5 class="card-title text-dark">
                 <strong>Dari : </strong> {{ $item->user_name }}
-                <small class="text-muted">{{ \Carbon\Carbon::parse($item->updated_at ?? $item->created_at)->format('H:i:s || d-m-Y') }}</small>
+                <small class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->format('H:i:s || d-m-Y') }}</small>
               </h5>
               <p class="card-text">{{ $item->complaint_text }}</p>
             </div>

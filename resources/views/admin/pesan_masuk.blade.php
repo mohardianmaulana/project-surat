@@ -64,8 +64,10 @@
               <p class="card-text">{{ $item->complaint_text }}</p>
             </div>
             <div>
-            @if ($item->reply_pelapor == 0)
-              <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
+            @if (!is_null($item->date_replied_by))
+                <span class="text-success">Sudah Dibalas</span>
+            @else
+                <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
             @endif
               <form action="{{ route('laporan.update', ['id' => $item->id]) }}" method="POST" style="display:inline;">
                 @csrf

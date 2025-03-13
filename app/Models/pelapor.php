@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class pelapor extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'reply_pelapor', 'answer_status', 'date_replied_by', 'date_reply_pelapor', 'status', 'pending', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'user_id', 'unit_id', 'complaint_text', 'reply_text', 'replied_by', 'reply_pelapor', 'date_replied_by', 'date_reply_pelapor', 'status', 'pending', 'forwarded_at', 'processed_at', 'completed_at', 'created_at', 'updated_at'];
 
     public function user()
     {
@@ -52,6 +52,7 @@ class pelapor extends Model
                 ->join('units', 'responses.unit_id', '=', 'units.id')
                 ->join('users as pelapor', 'complaints.user_id', '=', 'pelapor.id')
                 ->join('users as reviewer', 'responses.reviewed_by', '=', 'reviewer.id')
+                ->where('responses.status', 'pending')
                 ->select(
                     'responses.*', 
                     'units.name as unit_name', 

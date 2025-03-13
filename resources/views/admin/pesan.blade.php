@@ -52,16 +52,18 @@
         @else
         @foreach ($pesan as $item)
         <div class="card shadow mb-4">
-        <div class="card-header d-flex justify-content-between">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <span>Kepada : {{ $item->unit_name }}</span>
-            <span class="
-                @if($item->status == 'pending') text-white 
-                @elseif($item->status == 'forwarded') text-info 
-                @elseif($item->status == 'processed') text-warning 
-                @elseif($item->status == 'completed') text-success 
-                @endif">
-                Status : {{ ucfirst($item->status) }}
-            </span>
+            <div class="d-flex flex-column align-items-center">
+                <span class="badge mb-1
+                    @if($item->status == 'pending') bg-dark text-white 
+                    @elseif($item->status == 'forwarded') bg-info text-white 
+                    @elseif($item->status == 'processed') bg-warning text-dark 
+                    @elseif($item->status == 'completed') bg-success text-white 
+                    @endif">
+                    {{ ucfirst($item->status) }}
+                </span>
+            </div>
         </div>
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>

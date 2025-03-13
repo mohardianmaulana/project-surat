@@ -64,7 +64,11 @@
               <p class="card-text">{{ $item->reply_text }}</p>
             </div>
             <div>
+              @if (!is_null($item->date_replied_by))
+                  <span class="text-success">Sudah Dibalas</span>
+              @else
               <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
+              @endif
               <!-- <a href="#" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</a>
               <a class="btn btn-secondary btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">Detail</a> -->
             </div>

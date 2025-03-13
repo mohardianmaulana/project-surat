@@ -8,6 +8,8 @@ use App\Models\Unit;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPUnit\Framework\isNull;
+
 class pelaporController extends Controller
 {
     public function index() {
@@ -35,7 +37,7 @@ class pelaporController extends Controller
             ->whereNotNull('complaints.reply_text') // Hanya tampilkan yang sudah dibalas
             ->where('complaints.user_id', $userId)
             ->where('complaints.status', 'pending')
-            ->where('complaints.reply_pelapor', '0')
+            ->whereNull('complaints.date_replied_by') 
             ->select(
                 'complaints.*', 
                 'units.name as unit_name', 
@@ -69,10 +71,7 @@ class pelaporController extends Controller
         $pesan_keluar = pelapor::join('units', 'complaints.unit_id', '=', 'units.id')
             ->join('users as pelapor_user', 'complaints.user_id', '=', 'pelapor_user.id') // Join untuk pelapor
             ->leftJoin('users as replied_user', 'complaints.replied_by', '=', 'replied_user.id') // Join untuk yang membalas
-            ->whereNotNull('complaints.reply_text') // Hanya tampilkan yang sudah dibalas
             ->where('complaints.user_id', $userId)
-            ->where('complaints.status', 'pending')
-            ->where('complaints.reply_pelapor', '1')
             ->select(
                 'complaints.*', 
                 'units.name as unit_name', 
@@ -112,14 +111,13 @@ class pelaporController extends Controller
         // }
 
         // Cek apakah reply_pelapor sudah bernilai 1
-        if ($pelapor->reply_pelapor == 1) {
+        if (!isNull($pelapor->date_reply_pelapor)) {
             return redirect()->back()->with('error', 'Anda sudah membalas, tidak bisa membalas lagi.');
         }
 
         // Update hanya kolom reply_text
         $pelapor->update([
             'complaint_text' => $request->complain_text,
-            'reply_pelapor' => '1',
             'date_reply_pelapor' => now(),
             'updated_at' => now(),
         ]);

@@ -59,12 +59,11 @@
             <div>
               <h5 class="card-title text-dark">
                 <strong>Dari : </strong> {{ $item->unit_name }}
-                <small class="text-muted">{{ \Carbon\Carbon::parse($item->updated_at ?? $item->created_at)->format('H:i:s || d-m-Y') }}</small>
+                <small class="text-muted">{{ \Carbon\Carbon::parse($item->reviewed_at)->format('H:i:s || d-m-Y') }}</small>
               </h5>
               <p class="card-text">{{ $item->response_text }}</p>
             </div>
             <div>
-              <a class="btn btn-dark btn-sm btn-custom me-2" data-bs-toggle="modal" data-bs-target="#modalReply{{ $item->id }}">Reply</a>
               <form action="{{ route('send.wa', ['complaint_id' => $item->id]) }}" method="GET" style="display:inline;">
                 <button type="submit" class="btn btn-primary btn-sm btn-custom me-2">Teruskan</button>
             </form>
@@ -113,38 +112,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-        </div>
-    </div>
-</div>
-@endforeach
-
-@foreach ($pesan_masuk_upt as $item)
-<div class="modal fade" id="modalReply{{ $item->id }}" tabindex="-1" aria-labelledby="modalReplyLabel{{ $item->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-secondary text-white">
-                <h5 class="modal-title" id="modalReplyLabel{{ $item->id }}">Balas Laporan</h5>
-            </div>
-            <form action="{{ route('reply', $item->id) }}" method="POST">
-                @csrf
-                <div class="modal-body p-4">
-                    <div class="mb-3">
-                        <h6 class="fw-bold text-muted">Permasalahan</h6>
-                        <div class="p-3 bg-light rounded">
-                            {{ $item->response_text }}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <h6 class="fw-bold text-muted">Balasan</h6>
-                        <textarea class="form-control border-0 shadow p-3" name="reply_text" rows="4" placeholder="Tulis balasan di sini..." required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Kirim Balasan</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

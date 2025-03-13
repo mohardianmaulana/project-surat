@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->text('reply_text')->nullable();
             $table->foreignId('replied_by')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('reply_pelapor', ['0', '1'])->default('0');
-            $table->enum('answer_status', ['0', '1'])->default('0');
             $table->timestamp('date_replied_by')->nullable();
             $table->timestamp('date_reply_pelapor')->nullable();
             $table->enum('status', ['pending', 'forwarded', 'processed', 'completed'])->default('pending');
