@@ -7,6 +7,10 @@ use App\Http\Controllers\pelaporController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UnitPoliwangiController;
+use App\Http\Controllers\TwilioWebhookController;
+
+Route::post('/twilio/webhook', [TwilioWebhookController::class, 'receive'])
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
